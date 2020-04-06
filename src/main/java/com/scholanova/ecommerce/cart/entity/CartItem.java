@@ -18,6 +18,13 @@ public class CartItem {
     public CartItem() {
     }
 
+    public static CartItem create(Product product, int quantity){
+        CartItem cartItem = new CartItem();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(quantity);
+        return cartItem;
+    }
+
     public Long getId() {return id;}
 
     public void setId(Long id) {

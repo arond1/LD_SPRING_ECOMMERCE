@@ -1,9 +1,9 @@
 package com.scholanova.ecommerce.cart.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.scholanova.ecommerce.product.entity.Product;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +16,29 @@ public class Cart {
     private Long id;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> products = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public Cart() {
+    }
+
+    public CartItem getCartItemByProductId(Long productId){
+        return null;
+    }
+
+    public Cart addProduct(Long productId, int quantity){
+        return null;
+    }
+
+    public Cart removeProduct(Long productId){
+        return null;
+    }
+
+    public Cart changeProductQuantity(Long productId, int quantity){
+        return null;
+    }
+
+    public BigDecimal getTotalPrice(){
+        return null;
     }
 
     public Long getId() {return id;}
@@ -27,9 +47,9 @@ public class Cart {
         this.id = id;
     }
 
-    public List<CartItem> getProducts() {return products;}
+    public List<CartItem> getCartItems() {return cartItems;}
 
-    public void setProducts(List<CartItem> products) {
-        this.products = products;
+    public void setCartItems(List<CartItem> products) {
+        this.cartItems = products;
     }
 }
