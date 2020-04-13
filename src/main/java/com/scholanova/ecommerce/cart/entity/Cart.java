@@ -28,7 +28,7 @@ public class Cart {
         return cartItems.stream().filter(item -> item.getProduct().getName().equals(productName)).findFirst().orElseThrow(() -> new NoSuchElementException(productName.toString()));
     }
 
-    public Cart addProduct(Product product, int quantity) {
+    public Cart addProduct(Product product, int quantity) throws IllegalArgumentException{
         if (quantity < 1) throw new IllegalArgumentException("quantity must be a positive integer");
         CartItem item;
         try {
@@ -48,13 +48,14 @@ public class Cart {
         return this;
     }
 
-    public Cart changeProductQuantity(Product product, int quantity) {
+    public Cart changeProductQuantity(Product product, int quantity) throws IllegalArgumentException{
         if (quantity < 1) throw new IllegalArgumentException("quantity must be a positive integer");
         CartItem itemToChangeQuantity = getCartItemByProductName(product.getName());
         itemToChangeQuantity.setQuantity(quantity);
         return this;
     }
 
+    @JsonProperty("totalPrice")
     public BigDecimal getTotalPrice() {
         BigDecimal totalPrice = BigDecimal.valueOf(0);
         for (CartItem item: cartItems) {

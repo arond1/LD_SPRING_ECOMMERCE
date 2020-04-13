@@ -2,8 +2,10 @@ package com.scholanova.ecommerce.product.controller;
 
 import com.scholanova.ecommerce.product.entity.Product;
 import com.scholanova.ecommerce.product.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public class ProductController {
 
     private ProductRepository repository;
 
-    public ProductController(ProductRepository repository) {
+    public ProductController(@Autowired ProductRepository repository) {
         this.repository = repository;
     }
 
@@ -31,6 +33,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Product addProduct(@RequestBody Product product){
         return repository.save(product);
     }

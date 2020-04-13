@@ -4,8 +4,11 @@ import com.scholanova.ecommerce.product.entity.Product;
 import com.scholanova.ecommerce.product.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.Extensions;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,7 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@ExtendWith(MockitoExtension.class)
 class ProductControllerTest {
 
     @Mock
@@ -27,11 +30,6 @@ class ProductControllerTest {
     private ProductController controller;
 
     private MockMvc mockMvc;
-
-    public ProductControllerTest(ProductController controller, MockMvc mockMvc) {
-        this.controller = controller;
-        this.mockMvc = mockMvc;
-    }
 
     @BeforeEach
     void init() {
@@ -60,7 +58,7 @@ class ProductControllerTest {
         )
         .andDo(print())
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id", is(Long.valueOf(1234l))));
+        .andExpect(jsonPath("$.id", is(1234)));
     }
 
 }
