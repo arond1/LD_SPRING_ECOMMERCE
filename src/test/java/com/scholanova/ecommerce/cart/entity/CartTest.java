@@ -1,128 +1,157 @@
 package com.scholanova.ecommerce.cart.entity;
 
 import com.scholanova.ecommerce.product.entity.Product;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.any;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CartTest {
 
-    void getCartItemByProductIdShouldReturnCorrectCartItem(){
+    @Test
+    void getCartItemByProductNameShouldReturnCorrectCartItem() {
         //given
         Cart cart = new Cart();
         Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
-        target.setId((long) 12);
         Product decoy = Product.create("decoy", "decoy", 10.0f, 0.2f, "EUR");
-        decoy.setId((long)14);
         cart.getCartItems().add(CartItem.create(target, 1));
         cart.getCartItems().add(CartItem.create(decoy, 2));
         //when
-        CartItem tested = cart.getCartItemByProductId((long)12);
+        CartItem tested = cart.getCartItemByProductName("target");
         //then
         assertThat(tested.getProduct().getName()).isEqualTo("target");
     }
 
-    void getCartItemByProductIdShouldThrowNoSuchElementIfNotFound(){
+    @Test
+    void getCartItemByProductIdShouldThrowNoSuchElementIfNotFound() {
         //given
         Cart cart = new Cart();
         Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
-        target.setId((long) 12);
         cart.getCartItems().add(CartItem.create(target, 1));
 
         //then
-        assertThrows(NoSuchElementException.class, () -> {cart.getCartItemByProductId((long)1234);});
+        assertThrows(NoSuchElementException.class, () -> {
+            cart.getCartItemByProductName("something");
+        });
     }
 
+    @Test
     void addProductShouldCreateANewCartItem() {
         //given
-        Product fakeProduct = Product.create("fake", "a fake product", 10.0f, 0.2f, "EUR");
-        fakeProduct.setId((long)12);
+        Product fakeProduct = Product.create("target", "a fake product", 10.0f, 0.2f, "EUR");
         Cart tested = new Cart();
         //when
-        tested.addProduct((long)12, 2);
+        tested.addProduct(fakeProduct, 2);
         //then
-        assertThat(tested.getCartItemByProductId((long)12)).isInstanceOf(CartItem.class);
+        assertThat(tested.getCartItemByProductName("target")).isInstanceOf(CartItem.class);
     }
 
-    void addProductShouldAddProduct(){
+    @Test
+    void addProductShouldAddProduct() {
         //given
         Cart cart = new Cart();
-        //Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
-        //target.setId((long) 12);
+        Product testedProduct = Product.create("testedProduct", "testedProduct", 10.0f, 0.2f, "EUR");
         //when
-        cart.addProduct((long)12, 3);
+        cart.addProduct(testedProduct, 3);
         //then
-        assertThat(cart.getCartItemByProductId((long)12).getQuantity()).isEqualTo(3);
+        assertThat(cart.getCartItemByProductName("testedProduct").getQuantity()).isEqualTo(3);
     }
 
+    @Test
     void addProductShouldThrowIllegalArgExcIfQuantityUnderOne() {
         //given
         Cart tested = new Cart();
+        Product testProduct = Product.create("testProduct", "testProduct", 10.0f, 0.2f, "EUR");
         //then
-        assertThrows(IllegalArgumentException.class, () -> {tested.addProduct((long)12, 0);});
-        assertThrows(IllegalArgumentException.class, () -> {tested.addProduct((long)12, -3);});
+        assertThrows(IllegalArgumentException.class, () -> {
+            tested.addProduct(testProduct, 0);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            tested.addProduct(testProduct, -3);
+        });
     }
 
+    @Test
     void addProductShouldAddquantityIfProductAlreadyExists() {
         //given
         Cart cart = new Cart();
-        Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
-        target.setId((long) 12);
-        cart.getCartItems().add(CartItem.create(target, 2));
+        Product testedProduct = Product.create("testedProduct", "testedProduct", 10.0f, 0.2f, "EUR");
+        cart.getCartItems().add(CartItem.create(testedProduct, 2));
         //when
-        cart.addProduct((long)12, 3);
+        cart.addProduct(testedProduct, 3);
         //then
-        assertThat(cart.getCartItemByProductId((long)12).getQuantity()).isEqualTo(5);
+        assertThat(cart.getCartItemByProductName("testedProduct").getQuantity()).isEqualTo(5);
     }
 
+    @Test
     void removeProductShouldRemoveCartItem() {
         //given
         Cart cart = new Cart();
-        Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
-        target.setId((long) 12);
-        cart.getCartItems().add(CartItem.create(target, 2));
+        Product testedProduct = Product.create("testedProduct", "testedProduct", 10.0f, 0.2f, "EUR");
+        cart.getCartItems().add(CartItem.create(testedProduct, 2));
         //when
-        cart.removeProduct((long)12);
+        cart.removeProduct(testedProduct);
         //then
-        assertThrows(NoSuchElementException.class, () -> {cart.getCartItemByProductId((long)12);});
+        assertThrows(NoSuchElementException.class, () -> {
+            cart.getCartItemByProductName("testedProduct");
+        });
     }
 
+    @Test
+    void removeProductShouldThrowNoSuchElemExcIfProductNotFound() {
+        //given
+        Cart cart = new Cart();
+        Product testedProduct = Product.create("testedProduct", "testedProduct", 10.0f, 0.2f, "EUR");
+        //then
+        assertThrows(NoSuchElementException.class, () -> {
+            cart.getCartItemByProductName("testedProduct");
+        });
+    }
+
+    @Test
     void changeProductQuantityShouldChangeQuantity() {
         //given
         Cart cart = new Cart();
         Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
-        target.setId((long) 12);
         cart.getCartItems().add(CartItem.create(target, 2));
         //when
-        cart.changeProductQuantity((long)12, 3);
+        cart.changeProductQuantity(target, 3);
         //then
-        assertThat(cart.getCartItemByProductId((long)12).getQuantity()).isEqualTo(3);
+        assertThat(cart.getCartItemByProductName("target").getQuantity()).isEqualTo(3);
     }
 
+    @Test
     void changeProductQuantityShouldThrowIllegalArgExcIfQuantityUnderOne() {
         //given
         Cart tested = new Cart();
+        Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
+        tested.addProduct(target, 2);
         //then
-        assertThrows(IllegalArgumentException.class, () -> {tested.changeProductQuantity((long)12, 0);});
-        assertThrows(IllegalArgumentException.class, () -> {tested.changeProductQuantity((long)12, -3);});
+        assertThrows(IllegalArgumentException.class, () -> {
+            tested.changeProductQuantity(target, 0);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            tested.changeProductQuantity(target, -3);
+        });
     }
 
+    @Test
     void getTotalPriceShouldReturnTotalPriceWithVATPerProduct() {
         //given
         Cart cart = new Cart();
         Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
         target.setId((long) 12);
         Product decoy = Product.create("decoy", "decoy", 12.0f, 0.05f, "EUR");
-        decoy.setId((long)14);
+        decoy.setId((long) 14);
         cart.getCartItems().add(CartItem.create(target, 3));
         cart.getCartItems().add(CartItem.create(decoy, 5));
         //when
         BigDecimal tested = cart.getTotalPrice();
         //then
-        assertThat(tested).isEqualTo(BigDecimal.valueOf((10.0*1.2*3)+(12.0*1.05*5)));
+        assertThat(tested).isEqualTo(BigDecimal.valueOf((10.0 * 1.2 * 3) + (12.0 * 1.05 * 5)).setScale(2, RoundingMode.HALF_EVEN));
     }
 }

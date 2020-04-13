@@ -1,11 +1,14 @@
 package com.scholanova.ecommerce.cart.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.scholanova.ecommerce.product.entity.Product;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Entity(name = "cart")
 public class Cart {
@@ -21,24 +24,45 @@ public class Cart {
     public Cart() {
     }
 
-    public CartItem getCartItemByProductId(Long productId){
-        return null;
+    public CartItem getCartItemByProductName(String productName) {
+        return cartItems.stream().filter(item -> item.getProduct().getName().equals(productName)).findFirst().orElseThrow(() -> new NoSuchElementException(productName.toString()));
     }
 
-    public Cart addProduct(Long productId, int quantity){
-        return null;
+    public Cart addProduct(Product product, int quantity) {
+        if (quantity < 1) throw new IllegalArgumentException("quantity must be a positive integer");
+        CartItem item;
+        try {
+            item = getCartItemByProductName(product.getName());
+            int newQuantity = item.getQuantity() + quantity;
+            changeProductQuantity(product, newQuantity);
+        } catch (NoSuchElementException exc) {
+            item = CartItem.create(product, quantity);
+        }
+        this.cartItems.add(item);
+        return this;
     }
 
-    public Cart removeProduct(Long productId){
-        return null;
+    public Cart removeProduct(Product product) {
+        CartItem itemToBeRemoved = getCartItemByProductName(product.getName());
+        this.cartItems.remove(itemToBeRemoved);
+        return this;
     }
 
-    public Cart changeProductQuantity(Long productId, int quantity){
-        return null;
+    public Cart changeProductQuantity(Product product, int quantity) {
+        if (quantity < 1) throw new IllegalArgumentException("quantity must be a positive integer");
+        CartItem itemToChangeQuantity = getCartItemByProductName(product.getName());
+        itemToChangeQuantity.setQuantity(quantity);
+        return this;
     }
 
-    public BigDecimal getTotalPrice(){
-        return null;
+    public BigDecimal getTotalPrice() {
+        BigDecimal totalPrice = BigDecimal.valueOf(0);
+        for (CartItem item: cartItems) {
+            totalPrice = totalPrice.add(BigDecimal.valueOf(
+                    item.getProduct().getPriceVatExcluded() * (1+item.getProduct().getVat()) * item.getQuantity()
+            ));
+        }
+        return totalPrice.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     public Long getId() {return id;}
