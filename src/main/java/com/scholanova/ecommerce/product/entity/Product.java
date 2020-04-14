@@ -1,11 +1,9 @@
 package com.scholanova.ecommerce.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.UniqueElements;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "product")
 public class Product {
@@ -14,7 +12,7 @@ public class Product {
     @GeneratedValue
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-    @Column
+    @Column(unique = true)
     private String name;
     @Column
     private String description;

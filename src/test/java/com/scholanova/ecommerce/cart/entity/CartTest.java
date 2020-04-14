@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class CartTest {
 
     @Test
-    void getCartItemByProductNameShouldReturnCorrectCartItem() {
+    void getCartItemByProductName_ShouldReturnCorrectCartItem() {
         //given
         Cart cart = new Cart();
         Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
@@ -27,7 +27,7 @@ class CartTest {
     }
 
     @Test
-    void getCartItemByProductIdShouldThrowNoSuchElementIfNotFound() {
+    void getCartItemByProductId_ShouldThrowNoSuchElementIfNotFound() {
         //given
         Cart cart = new Cart();
         Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
@@ -40,7 +40,7 @@ class CartTest {
     }
 
     @Test
-    void addProductShouldCreateANewCartItem() {
+    void addProduct_ShouldCreateANewCartItem() {
         //given
         Product fakeProduct = Product.create("target", "a fake product", 10.0f, 0.2f, "EUR");
         Cart tested = new Cart();
@@ -51,7 +51,7 @@ class CartTest {
     }
 
     @Test
-    void addProductShouldAddProduct() {
+    void addProduct_ShouldAddProduct() {
         //given
         Cart cart = new Cart();
         Product testedProduct = Product.create("testedProduct", "testedProduct", 10.0f, 0.2f, "EUR");
@@ -62,7 +62,7 @@ class CartTest {
     }
 
     @Test
-    void addProductShouldThrowIllegalArgExcIfQuantityUnderOne() {
+    void addProduct_ShouldThrowIllegalArgExcIfQuantityUnderOne() {
         //given
         Cart tested = new Cart();
         Product testProduct = Product.create("testProduct", "testProduct", 10.0f, 0.2f, "EUR");
@@ -76,7 +76,7 @@ class CartTest {
     }
 
     @Test
-    void addProductShouldAddquantityIfProductAlreadyExists() {
+    void addProduct_ShouldAddquantityIfProductAlreadyExists() {
         //given
         Cart cart = new Cart();
         Product testedProduct = Product.create("testedProduct", "testedProduct", 10.0f, 0.2f, "EUR");
@@ -88,7 +88,7 @@ class CartTest {
     }
 
     @Test
-    void removeProductShouldRemoveCartItem() {
+    void removeProduct_ShouldRemoveCartItem() {
         //given
         Cart cart = new Cart();
         Product testedProduct = Product.create("testedProduct", "testedProduct", 10.0f, 0.2f, "EUR");
@@ -102,7 +102,7 @@ class CartTest {
     }
 
     @Test
-    void removeProductShouldThrowNoSuchElemExcIfProductNotFound() {
+    void removeProduct_ShouldThrowNoSuchElemExcIfProductNotFound() {
         //given
         Cart cart = new Cart();
         Product testedProduct = Product.create("testedProduct", "testedProduct", 10.0f, 0.2f, "EUR");
@@ -113,7 +113,7 @@ class CartTest {
     }
 
     @Test
-    void changeProductQuantityShouldChangeQuantity() {
+    void changeProduct_QuantityShouldChangeQuantity() {
         //given
         Cart cart = new Cart();
         Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
@@ -125,7 +125,7 @@ class CartTest {
     }
 
     @Test
-    void changeProductQuantityShouldThrowIllegalArgExcIfQuantityUnderOne() {
+    void changeProduct_QuantityShouldThrowIllegalArgExcIfQuantityUnderOne() {
         //given
         Cart tested = new Cart();
         Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");
@@ -140,7 +140,7 @@ class CartTest {
     }
 
     @Test
-    void getTotalPriceShouldReturnTotalPriceWithVATPerProduct() {
+    void getTotalPrice_ShouldReturnTotalPriceWithVATPerProduct() {
         //given
         Cart cart = new Cart();
         Product target = Product.create("target", "target", 10.0f, 0.2f, "EUR");

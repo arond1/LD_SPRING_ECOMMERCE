@@ -1,6 +1,7 @@
 package com.scholanova.ecommerce.cart.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.scholanova.ecommerce.order.entity.Orders;
 import com.scholanova.ecommerce.product.entity.Product;
 
 import javax.persistence.*;
@@ -20,6 +21,10 @@ public class Cart {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
+
+    @OneToOne(mappedBy = "cart", optional = true)
+    private Orders orders;
+
 
     public Cart() {
     }
@@ -76,5 +81,11 @@ public class Cart {
 
     public void setCartItems(List<CartItem> products) {
         this.cartItems = products;
+    }
+
+    public Orders getOrders() {return orders;}
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
     }
 }
