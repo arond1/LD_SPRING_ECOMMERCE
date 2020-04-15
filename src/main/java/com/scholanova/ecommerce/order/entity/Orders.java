@@ -2,10 +2,14 @@ package com.scholanova.ecommerce.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scholanova.ecommerce.cart.entity.Cart;
+import com.scholanova.ecommerce.cart.entity.CartItem;
+import com.scholanova.ecommerce.order.NotAllowedException;
 import com.sun.xml.bind.v2.TODO;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Calendar;
+import java.util.List;
 
 @Entity(name="orders")
 public class Orders {
@@ -31,12 +35,23 @@ public class Orders {
     public Orders() {
     }
 
-    public void createOrder(){
-        //TODO
+    public static Orders createOrder(Cart c) throws NotAllowedException {
+        Orders order = new Orders();
+        order.setCart(c);
+        return order;
     }
 
-    public void checkout(){
-        //TODO
+    public void checkout() throws NotAllowedException,IllegalArgumentException {
+        if(this.getCart() != null && this.getCart().getCartItems().size() == 0)
+            throw new IllegalArgumentException();
+        if(this.getStatus() == OrderStatus.CLOSED)
+        {
+            throw new NotAllowedException();
+        }
+        else{
+            this.setIssueDate(new Date(Calendar.getInstance().getTime().getTime()));
+            this.status = OrderStatus.PENDING;
+        }
     }
 
     public void getDiscount(){
@@ -78,7 +93,9 @@ public class Orders {
 
     public Cart getCart() {return cart;}
 
-    public void setCart(Cart cart) {
+    public void setCart(Cart cart) throws NotAllowedException {
+        if(this.getStatus() == OrderStatus.CLOSED)
+            throw new NotAllowedException();
         this.cart = cart;
     }
 }
