@@ -52,12 +52,12 @@ Pour vous aider, voici quelques pistes: HttpStatusException, ControllerAdvice
 1) Ce module devra être testé unitairement.
 Lors de l'appel au contrôler CartController, Si la classe Cart renvoie une exception de type IllegalArgumentException, alors le controller devra renvoyer une erreur ayant ce format :
 Status HTTP : 400
-Corps de la réponse : {"message": "invalid request <message>"}
+Corps de la réponse : {"message": "invalid request 'message' "}
 Le message <message> devra contenir des informations permettant de comprendre pourquoi il y a eu une erreur
 
 2) Lors de l'appel au contrôler CartController, Si la classe Cart renvoie une exception de type IllegalArgumentException, alors le controller devra renvoyer une erreur ayant ce format :
-Status HTTP : 400
-Corps de la réponse : {"message": "<message> not found"}
+Status HTTP : 404
+Corps de la réponse : {"message": " 'message' not found"}
 Le message <message> devra contenir des informations permettant de comprendre qu'est-ce qui n'a pas été trouvé
 
 #### Bonus
