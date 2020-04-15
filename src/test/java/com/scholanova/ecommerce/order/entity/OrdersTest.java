@@ -79,13 +79,21 @@ class OrdersTest {
     }
 
     @Test
-    public void getDiscount_shouldReturnZEROIFCartTotalPriceIsLessThan100(){
-
+    public void getDiscount_shouldReturnZEROIFCartTotalPriceIsLessThan100() throws NotAllowedException {
+        Orders o = new Orders();
+        o.setCart(new Cart().addProduct(Product.create("test", "tested",50,10,"EUR" ), 1));
+        //when
+        //then
+        assertThat(o.getDiscount() == 0);
     }
 
     @Test
-    public void getDiscount_shouldReturn5percentIfCartTotalPriceIsMoreOrEqual100(){
-
+    public void getDiscount_shouldReturn5percentIfCartTotalPriceIsMoreOrEqual100() throws NotAllowedException {
+        Orders o = new Orders();
+        o.setCart(new Cart().addProduct(Product.create("test", "tested",500,10,"EUR" ), 1));
+        //when
+        //then
+        assertThat(o.getDiscount() == 5);
     }
 
     @Test

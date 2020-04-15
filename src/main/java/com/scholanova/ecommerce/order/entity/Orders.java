@@ -55,8 +55,11 @@ public class Orders {
         }
     }
 
-    public void getDiscount(){
-        //TODO
+    public int getDiscount(){
+        if(this.cart.getTotalPrice().intValue() < 100)
+            return 0;
+        else
+            return 5;
     }
 
     public void getOrderPrice(){
