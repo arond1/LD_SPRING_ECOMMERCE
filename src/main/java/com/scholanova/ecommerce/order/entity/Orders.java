@@ -38,6 +38,7 @@ public class Orders {
     public static Orders createOrder(Cart c) throws NotAllowedException {
         Orders order = new Orders();
         order.setCart(c);
+        order.setStatus(OrderStatus.CREATED);
         return order;
     }
 

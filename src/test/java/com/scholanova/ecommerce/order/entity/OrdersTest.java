@@ -72,8 +72,10 @@ class OrdersTest {
     }
 
     @Test
-    public void createOrder_ShouldSetStatusToCreated(){
-
+    public void createOrder_ShouldSetStatusToCreated() throws NotAllowedException {
+        Cart cart = new Cart();
+        Orders o = Orders.createOrder(cart);
+        assertThat(o.getStatus() == OrderStatus.CREATED);
     }
 
     @Test
