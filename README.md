@@ -63,3 +63,4 @@ Le message <message> devra contenir des informations permettant de comprendre qu
 #### Bonus
 **Les bonus ne seront pris en compte si et seulement si tous les points précédents ont été faits**
 * Appliquer la même stratégie de gestion des exceptions au module Order
+* Ajouter les tests unitaires du controller CartController
