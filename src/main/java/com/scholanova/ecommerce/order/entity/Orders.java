@@ -68,7 +68,7 @@ public class Orders {
     }
 
     public void close(){
-        //TODO
+        this.setStatus(OrderStatus.CLOSED);
     }
 
 

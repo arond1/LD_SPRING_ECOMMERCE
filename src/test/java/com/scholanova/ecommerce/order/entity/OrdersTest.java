@@ -110,8 +110,9 @@ class OrdersTest {
     public void close_ShouldSetStatusToClose(){
         Orders o = new Orders();
         //when
+        o.close();
         //then
-        assertThat(o.getOrderPrice() == price*(1-o.getDiscount()));
+        assertThat(o.getStatus() == OrderStatus.CLOSED);
     }
 
 }
