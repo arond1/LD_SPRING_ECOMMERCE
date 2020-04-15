@@ -7,6 +7,7 @@ import com.scholanova.ecommerce.order.NotAllowedException;
 import com.sun.xml.bind.v2.TODO;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
@@ -62,8 +63,8 @@ public class Orders {
             return 5;
     }
 
-    public void getOrderPrice(){
-        //TODO
+    public double getOrderPrice(){
+        return (1.00 - this.getDiscount()) * this.cart.getTotalPrice().doubleValue();
     }
 
     public void close(){

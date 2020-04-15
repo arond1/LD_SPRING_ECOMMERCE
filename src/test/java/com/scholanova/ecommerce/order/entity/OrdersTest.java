@@ -97,13 +97,21 @@ class OrdersTest {
     }
 
     @Test
-    public void getOrderPrice_shouldReturnTotalPriceWithDiscount(){
-
+    public void getOrderPrice_shouldReturnTotalPriceWithDiscount() throws NotAllowedException {
+        Orders o = new Orders();
+        int price = 500;
+        o.setCart(new Cart().addProduct(Product.create("test", "tested",price,10,"EUR" ), 1));
+        //when
+        //then
+        assertThat(o.getOrderPrice() == price*(1-o.getDiscount()));
     }
 
     @Test
     public void close_ShouldSetStatusToClose(){
-
+        Orders o = new Orders();
+        //when
+        //then
+        assertThat(o.getOrderPrice() == price*(1-o.getDiscount()));
     }
 
 }
