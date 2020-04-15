@@ -63,8 +63,8 @@ public class Orders {
             return 5;
     }
 
-    public double getOrderPrice(){
-        return (1.00 - this.getDiscount()) * this.cart.getTotalPrice().doubleValue();
+    public BigDecimal getOrderPrice(){
+        return this.cart.getTotalPrice().multiply(BigDecimal.valueOf(1.00 - (this.getDiscount())/100));
     }
 
     public void close(){

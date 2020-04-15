@@ -8,6 +8,7 @@ import com.scholanova.ecommerce.product.entity.Product;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Calendar;
 
@@ -100,10 +101,11 @@ class OrdersTest {
     public void getOrderPrice_shouldReturnTotalPriceWithDiscount() throws NotAllowedException {
         Orders o = new Orders();
         int price = 500;
-        o.setCart(new Cart().addProduct(Product.create("test", "tested",price,10,"EUR" ), 1));
-        //when
+        float vat = 0.1f;
+        o.setCart(new Cart().addProduct(Product.create("test", "tested",price,vat,"EUR" ), 1));
         //then
-        assertThat(o.getOrderPrice() == price*(1-o.getDiscount()));
+        System.out.println(o.getCart().getTotalPrice().multiply(BigDecimal.valueOf(0.95)));
+        assertThat(o.getOrderPrice().equals(o.getCart().getTotalPrice().multiply(BigDecimal.valueOf(0.95))));
     }
 
     @Test
